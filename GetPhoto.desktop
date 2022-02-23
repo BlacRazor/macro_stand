@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/bin/python /home/pi/Stand/gphoto.py
+Icon=/home/pi/Stand/camera.png
+Terminal=true
+Name=GetPhoto
+Name[ru]=GetPhoto
+Comment=Comment
+Comment[ru]=Комментарий
