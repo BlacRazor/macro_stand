@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec=/bin/bash /home/pi/update.sh
+Icon=/home/pi/macro_stand/refresh.png
+Terminal=true
+Name=UpdateStand
+Name[ru]=UpdateStand
+Comment=Comment
+Comment[ru]=Комментарий
