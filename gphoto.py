@@ -27,14 +27,14 @@ GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
 def go_home(start,steps):
 #    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
     while GPIO.input(start)==True:
-        motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+        motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 
-    motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+    motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
                      .001, # step delay [sec]
@@ -48,7 +48,7 @@ def next_photo(finish,frame,steps):
     iteration=0
     while iteration<frame:
         if GPIO.input(finish)==True:
-            motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+            motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
@@ -57,7 +57,7 @@ def next_photo(finish,frame,steps):
         else:
             print('End linear guide')
             iteration=frame
-            motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+            motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
                      .001, # step delay [sec]
