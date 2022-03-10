@@ -5,15 +5,13 @@ import time
 import os
 #import shutil
 from PIL import Image
-# Mount  RAMdrive
-subprocess.run(["mount -a"],shell=True)
 #Set drive and endpoint settings
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
 EN_pin = 24 # enable pin (LOW to enable)
-next_frame = 15
+next_frame = 6
 steps_per_round =198 #(Default 198)
 finish_point_pin=27
 start_point_pin=17
@@ -27,14 +25,14 @@ GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
 def go_home(start,steps):
 #    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
     while GPIO.input(start)==True:
-        motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+        motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 
-    motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+    motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
                      .001, # step delay [sec]
@@ -48,7 +46,7 @@ def next_photo(finish,frame,steps):
     iteration=0
     while iteration<frame:
         if GPIO.input(finish)==True:
-            motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+            motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
@@ -57,7 +55,7 @@ def next_photo(finish,frame,steps):
         else:
             print('End linear guide')
             iteration=frame
-            motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+            motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
                      .001, # step delay [sec]
@@ -77,7 +75,7 @@ while finish_work!=True:
   # Get sample lenght and decide count photo
   print("Please input sample lenght(cm) and press Enter:")
   sample_lenght = int(input())
-  sample_count = int(sample_lenght/3)+1
+  sample_count = int(sample_lenght/5)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
   # Take Photo from DSLR
@@ -85,6 +83,7 @@ while finish_work!=True:
     result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True)
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,next_frame,steps_per_round)
+    time.sleep(3)
 
   print(photo_range)
   go_home(start_point_pin,steps_per_round)
