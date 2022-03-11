@@ -22,12 +22,20 @@ motor = RpiMotorLib.A4988Nema(direction_pin, step_pin, (21,21,21), "DRV8825")
 GPIO.setup(EN_pin,GPIO.OUT) 
 GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
 # Function for return holder to start point (start_pin,number steps)
-def go_home(start,steps):
+def go_home(start,steps,steps_to_home):
 #    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
+    
+    motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                    steps_to_home, # number of steps
+                     .001, # step delay [sec]
+                     False, # True = print verbose output 
+                     .05) # initial delay [sec]
+    small_steps=int(steps/4)
     while GPIO.input(start)==True:
         motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
-                    steps, # number of steps
+                    small_steps, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
@@ -85,8 +93,9 @@ while finish_work!=True:
     next_photo(finish_point_pin,next_frame,steps_per_round)
     time.sleep(3)
 
+  num_steps_to_home=(next_frame*steps_per_round)*(sample_count-1)
   print(photo_range)
-  go_home(start_point_pin,steps_per_round)
+  go_home(start_point_pin,steps_per_round,num_steps_to_home)
   images = [Image.open(x) for x in photo_range]
   widths, heights = zip(*(i.size for i in images))
 
@@ -111,8 +120,8 @@ while finish_work!=True:
   # Open folder with photo
   subprocess.run(["pcmanfm"],shell=True)
   #shutil.copytree("/home/pi/project/RAMdrive/"+sample_name,"/home/pi/project/smb/"+sample_name)
-  subprocess.run(["cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/Pictures/sampls/"+sample_name],shell=True)
-  subprocess.run(["cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/project/smb/"+sample_name],shell=True)
+  subprocess.run(["sudo cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/Pictures/sampls/"+sample_name],shell=True)
+  subprocess.run(["sudo cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/project/smb/"+sample_name],shell=True)
 
   
 
