@@ -11,7 +11,8 @@ GPIO.setmode(GPIO.BCM)
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
 EN_pin = 24 # enable pin (LOW to enable)
-next_frame = 6
+next_frame = 4 # cout round to next frame
+view_frame=3 # Count on devision lenghtsample
 steps_per_round =198 #(Default 198)
 finish_point_pin=27
 start_point_pin=17
@@ -83,7 +84,7 @@ while finish_work!=True:
   # Get sample lenght and decide count photo
   print("Please input sample lenght(cm) and press Enter:")
   sample_lenght = int(input())
-  sample_count = int(sample_lenght/5)+1
+  sample_count = int(sample_lenght/view_frame)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
   # Take Photo from DSLR
