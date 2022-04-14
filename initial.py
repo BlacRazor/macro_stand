@@ -26,14 +26,14 @@ def go_home(start,steps):
     while GPIO.input(start)==True:
         motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
-                    steps, # number of steps
+                     steps, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 
     motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
-                    int(steps/2), # number of steps
+                     steps/2, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
