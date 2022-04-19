@@ -120,6 +120,8 @@ while finish_work!=True:
   photo_range=[]
   go_start_position(steps_to_start)
   # Take Photo from DSLR
+  print("Check AF camera and push Enter")
+  input()
   for i in range(sample_count):
     result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True)
     photo_range.append(sample_name+"_"+str(i)+".jpg")
