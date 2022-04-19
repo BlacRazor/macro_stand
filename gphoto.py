@@ -82,14 +82,14 @@ finish_work=False
 print("Input frame size in mm (minimal 34mm):")
 frame_size=int(input())
 while finish_work!=True:
+  # Get sample lenght and decide count photo
+  print("Input sample lenght(mm) and press Enter:")
+  sample_lenght = int(input())
   # Get Sample name and create folder for photo
   print("Input sample name and press Enter:")
   sample_name = input()
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
-  # Get sample lenght and decide count photo
-  print("Input sample lenght(mm) and press Enter:")
-  sample_lenght = int(input())
   sample_lenght = sample_lenght+int(frame_size*0.5)
   steps_to_start=int((405-int(sample_lenght/2)+int(frame_size*0.5))*step_per_mm)
   crossing=0
