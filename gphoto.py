@@ -126,7 +126,7 @@ while finish_work!=True:
     next_photo(finish_point_pin,steps_per_frame)
     time.sleep(3)
 
-  num_steps_to_home=(steps_per_frame)*(sample_count-1)
+  num_steps_to_home=(steps_per_frame)*(sample_count-1)+steps_to_start-100
   print(photo_range)
   go_home(start_point_pin,num_steps_to_home)
   images = [Image.open(x) for x in photo_range]
