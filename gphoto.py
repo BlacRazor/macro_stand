@@ -131,8 +131,14 @@ while finish_work!=True:
   go_home(start_point_pin,num_steps_to_home)
   images = [Image.open(x) for x in photo_range]
   widths, heights = zip(*(i.size for i in images))
-
-  total_width = sum(widths)-(len(widths)*100)
+  if crossing==1:
+    cros_pixel=widths[0]-int(widths[0]*0.75)
+  elif crossing==2:
+    cros_pixel=widths[0]-int(widths[0]*0.5)
+  else: 
+    cros_pixel=widths[0]-int(widths[0]*0.25)
+    
+  total_width = sum(widths)-(len(widths)*cros_pixel)
   max_height = max(heights)
 
   new_im = Image.new('RGB', (total_width, max_height))
