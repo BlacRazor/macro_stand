@@ -8,6 +8,10 @@ from PIL import Image
 #Set drive and endpoint settings
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
+# 34mm minimal frame size
+# 7mm travel per round
+# 19steps on one mm travel
+step_per_mm=19
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
 EN_pin = 24 # enable pin (LOW to enable)
@@ -23,7 +27,7 @@ motor = RpiMotorLib.A4988Nema(direction_pin, step_pin, (21,21,21), "DRV8825")
 GPIO.setup(EN_pin,GPIO.OUT) 
 GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
 # Function for return holder to start point (start_pin,number steps)
-def go_home(start,steps,steps_to_home):
+def go_home(start,steps_to_home):
 #    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
     
     motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
@@ -32,7 +36,7 @@ def go_home(start,steps,steps_to_home):
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
-    small_steps=int(steps/4)
+    small_steps=int(198/4)
     while GPIO.input(start)==True:
         motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
@@ -43,60 +47,88 @@ def go_home(start,steps,steps_to_home):
 
     motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
-                    int(steps/2), # number of steps
+                    int(198/2), # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
     #GPIO.cleanup() # clear GPIO allocations after rungjhfrasp
 
 # Function for going to next point photo
-def next_photo(finish,frame,steps):
+def next_photo(finish,steps):
 #   GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
-    iteration=0
-    while iteration<frame:
-        if GPIO.input(finish)==True:
-            motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+  if GPIO.input(finish)==True:
+    motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
-        else:
-            print('End linear guide')
-            iteration=frame
-            motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
+  else:
+    motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
                      .001, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
-
-        iteration+=1
     #GPIO.cleanup() 
-
+def go_start_position(steps):
+  motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                    steps, # number of steps
+                     .001, # step delay [sec]
+                     False, # True = print verbose output 
+                     .05) # initial delay [sec]
 finish_work=False
+print("Input frame size in mm (minimal 34mm:")
+frame_size=int(input())
 while finish_work!=True:
   # Get Sample name and create folder for photo
-  print("Please input sample name and press Enter:")
+  print("Input sample name and press Enter:")
   sample_name = input()
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
   # Get sample lenght and decide count photo
-  print("Please input sample lenght(cm) and press Enter:")
+  print("Input sample lenght(mm) and press Enter:")
   sample_lenght = int(input())
-  sample_count = int(sample_lenght/view_frame)+1
+  sample_lenght = sample_lenght+int(frame_size*0,5)
+  steps_to_start=int((405-int(sample_lenght/2)+int(frame_size*0,5))*step_per_mm)
+  crossing=0
+  print("Input number choise frame crossing (only variant 1,2 or 3):")
+  print("1) 1/4")
+  print("2) 1/2")
+  print("3) 3/4")
+  crossing=input()
+  #sample_count = int(sample_lenght/frame_size)
+  if crossing==1:
+    #sample_count=int(sample_count*1,25)
+    frame_size=frame_size-int(frame_size*0,25)
+    steps_per_frame=int(frame_size*step_per_mm)
+    sample_count=int(sample_lenght/frame_size)
+  elif crossing==2:
+    frame_size=frame_size-int(frame_size*0,5)
+    steps_per_frame=int(frame_size*step_per_mm)
+    sample_count=int(sample_lenght/frame_size)    
+    #sample_count=int(sample_count*1,75)
+  else:
+    frame_size=frame_size-int(frame_size*0,75)
+    steps_per_frame=int(frame_size*step_per_mm)
+    sample_count=int(sample_lenght/frame_size)    
+    #sample_count=int(sample_count*3,25)
+
+  #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
+  go_start_position(steps_to_start)
   # Take Photo from DSLR
   for i in range(sample_count):
     result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True)
     photo_range.append(sample_name+"_"+str(i)+".jpg")
-    next_photo(finish_point_pin,next_frame,steps_per_round)
+    next_photo(finish_point_pin,steps_per_frame)
     time.sleep(3)
 
-  num_steps_to_home=(next_frame*steps_per_round)*(sample_count-1)
+  num_steps_to_home=(steps_per_frame)*(sample_count-1)
   print(photo_range)
-  go_home(start_point_pin,steps_per_round,num_steps_to_home)
+  go_home(start_point_pin,num_steps_to_home)
   images = [Image.open(x) for x in photo_range]
   widths, heights = zip(*(i.size for i in images))
 
