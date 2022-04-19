@@ -153,7 +153,7 @@ while finish_work!=True:
   # Open folder with photo
   subprocess.run(["pcmanfm"],shell=True)
   #shutil.copytree("/home/pi/project/RAMdrive/"+sample_name,"/home/pi/project/smb/"+sample_name)
-  subprocess.run(["sudo cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/Pictures/sampls/"+sample_name],shell=True)
+  subprocess.run(["sudo cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/Pictures/samples/"+sample_name],shell=True)
   subprocess.run(["sudo cp -r /home/pi/project/RAMdrive/"+sample_name+" /home/pi/project/smb/"+sample_name],shell=True)
 
   
