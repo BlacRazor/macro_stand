@@ -91,7 +91,7 @@ while finish_work!=True:
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
   sample_lenght = sample_lenght+int(frame_size*0.5)
-  steps_to_start=int((450-int(sample_lenght/2)+int(frame_size*0.5))*step_per_mm)
+  steps_to_start=int((500-int(sample_lenght/2)+int(frame_size*0.5))*step_per_mm)
   crossing=0
   print("Input number choise frame crossing (only variant 1,2 or 3):")
   print("1) 1/4")
