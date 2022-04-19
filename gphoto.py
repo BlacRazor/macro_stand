@@ -100,20 +100,20 @@ while finish_work!=True:
   crossing=int(input())
   #sample_count = int(sample_lenght/frame_size)
   if crossing==1:
-    #sample_count=int(sample_count*1,25)
     frame_size=frame_size-int(frame_size*0.25)
     steps_per_frame=int(frame_size*step_per_mm)
-    sample_count=int(sample_lenght/frame_size)
+    #sample_count=int(sample_lenght/frame_size)
+    sample_count=int(sample_count*1,25)
   elif crossing==2:
     frame_size=frame_size-int(frame_size*0.5)
     steps_per_frame=int(frame_size*step_per_mm)
-    sample_count=int(sample_lenght/frame_size)    
-    #sample_count=int(sample_count*1,75)
+    #sample_count=int(sample_lenght/frame_size)    
+    sample_count=int(sample_count*1,75)
   else:
     frame_size=frame_size-int(frame_size*0.75)
     steps_per_frame=int(frame_size*step_per_mm)
-    sample_count=int(sample_lenght/frame_size)    
-    #sample_count=int(sample_count*3,25)
+    #sample_count=int(sample_lenght/frame_size)    
+    sample_count=int(sample_count*3,25)
 
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
