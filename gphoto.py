@@ -90,27 +90,27 @@ while finish_work!=True:
   # Get sample lenght and decide count photo
   print("Input sample lenght(mm) and press Enter:")
   sample_lenght = int(input())
-  sample_lenght = sample_lenght+int(frame_size*0,5)
-  steps_to_start=int((405-int(sample_lenght/2)+int(frame_size*0,5))*step_per_mm)
+  sample_lenght = sample_lenght+int(frame_size*0.5)
+  steps_to_start=int((405-int(sample_lenght/2)+int(frame_size*0.5))*step_per_mm)
   crossing=0
   print("Input number choise frame crossing (only variant 1,2 or 3):")
   print("1) 1/4")
   print("2) 1/2")
   print("3) 3/4")
-  crossing=input()
+  crossing=int(input())
   #sample_count = int(sample_lenght/frame_size)
   if crossing==1:
     #sample_count=int(sample_count*1,25)
-    frame_size=frame_size-int(frame_size*0,25)
+    frame_size=frame_size-int(frame_size*0.25)
     steps_per_frame=int(frame_size*step_per_mm)
     sample_count=int(sample_lenght/frame_size)
   elif crossing==2:
-    frame_size=frame_size-int(frame_size*0,5)
+    frame_size=frame_size-int(frame_size*0.5)
     steps_per_frame=int(frame_size*step_per_mm)
     sample_count=int(sample_lenght/frame_size)    
     #sample_count=int(sample_count*1,75)
   else:
-    frame_size=frame_size-int(frame_size*0,75)
+    frame_size=frame_size-int(frame_size*0.75)
     steps_per_frame=int(frame_size*step_per_mm)
     sample_count=int(sample_lenght/frame_size)    
     #sample_count=int(sample_count*3,25)
