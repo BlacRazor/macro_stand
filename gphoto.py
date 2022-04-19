@@ -79,7 +79,7 @@ def go_start_position(steps):
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 finish_work=False
-print("Input frame size in mm (minimal 34mm:")
+print("Input frame size in mm (minimal 34mm):")
 frame_size=int(input())
 while finish_work!=True:
   # Get Sample name and create folder for photo
