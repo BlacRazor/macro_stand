@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import math
 from RpiMotorLib import RpiMotorLib
 import subprocess
 import time
@@ -12,6 +13,9 @@ GPIO.setmode(GPIO.BCM)
 # 7mm travel per round
 # 19steps on one mm travel
 step_per_mm=19
+# Half linear beams for compute start position
+half_line=480
+
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
 EN_pin = 24 # enable pin (LOW to enable)
@@ -79,9 +83,10 @@ def go_start_position(steps):
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 finish_work=False
-print("Input frame size in mm (minimal 34mm):")
-frame_size=int(input())
 while finish_work!=True:
+  # Get frame size
+  print("Input frame size in mm (minimal 34mm):")
+  frame_size=int(input())
   # Get sample lenght and decide count photo
   print("Input sample lenght(mm) and press Enter:")
   sample_lenght = int(input())
@@ -90,30 +95,32 @@ while finish_work!=True:
   sample_name = input()
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
-  sample_lenght = sample_lenght+int(frame_size*0.5)
-  steps_to_start=int((480-int(sample_lenght/2)+int(frame_size*0.5))*step_per_mm)
   crossing=0
   print("Input number choise frame crossing (only variant 1,2 or 3):")
   print("1) 1/4")
   print("2) 1/2")
   print("3) 3/4")
   crossing=int(input())
-  sample_count = int(sample_lenght/frame_size)
   if crossing==1:
-    frame_size=frame_size-int(frame_size*0.25)
-    steps_per_frame=int(frame_size*step_per_mm)
-    #sample_count=int(sample_lenght/frame_size)
-    sample_count=int(sample_count*1.25)+4
+    frame_size=frame_size-(frame_size*0.25)
+    steps_per_frame=math.ceil(frame_size*step_per_mm)
+    sample_count=math.ceil(sample_lenght/frame_size)
   elif crossing==2:
     frame_size=frame_size-int(frame_size*0.5)
-    steps_per_frame=int(frame_size*step_per_mm)
-    #sample_count=int(sample_lenght/frame_size)    
-    sample_count=int(sample_count*1.75)+4
+    steps_per_frame=math.ceil(frame_size*step_per_mm)
+    sample_count=math.ceil(sample_lenght/frame_size)
   else:
     frame_size=frame_size-int(frame_size*0.75)
-    steps_per_frame=int(frame_size*step_per_mm)
-    #sample_count=int(sample_lenght/frame_size)    
-    sample_count=int(sample_count*3.25)+4
+    steps_per_frame=math.ceil(frame_size*step_per_mm)
+    sample_count=math.ceil(sample_lenght/frame_size)
+
+  size_full_frame=sample_count*frame_size
+  ofset=size_full_frame-sample_lenght
+  if ofset<(frame_size/2):
+      sample_count=sample_count+1
+  size_full_frame=sample_count*frame_size
+  ofset=size_full_frame-sample_lenght
+  steps_to_start=math.ceil((half_line-(sample_lenght+ofset/2))*step_per_mm)
 
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
