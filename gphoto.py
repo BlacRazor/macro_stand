@@ -14,7 +14,7 @@ GPIO.setmode(GPIO.BCM)
 # 19steps on one mm travel
 step_per_mm=19
 # Half linear beams for compute start position
-half_line=480
+half_line=659
 
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
@@ -105,14 +105,17 @@ while finish_work!=True:
     frame_size=frame_size-(frame_size*0.25)
     steps_per_frame=math.ceil(frame_size*step_per_mm)
     sample_count=math.ceil(sample_lenght/frame_size)
+    sleep=1
   elif crossing==2:
     frame_size=frame_size-int(frame_size*0.5)
     steps_per_frame=math.ceil(frame_size*step_per_mm)
-    sample_count=math.ceil(sample_lenght/frame_size)
+    sample_count=math.ceil(sample_lenght/frame_size)+2
+    sleep=2
   else:
     frame_size=frame_size-int(frame_size*0.75)
     steps_per_frame=math.ceil(frame_size*step_per_mm)
-    sample_count=math.ceil(sample_lenght/frame_size)
+    sample_count=math.ceil(sample_lenght/frame_size)+6
+    sleep=3
 
   size_full_frame=sample_count*frame_size
   ofset=size_full_frame-sample_lenght
@@ -129,11 +132,11 @@ while finish_work!=True:
   # Take Photo from DSLR
   print("Check AF camera and push Enter")
   input()
-  for i in range(sample_count):
+  for i in range(sample_count+2):
     result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True)
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,steps_per_frame)
-    time.sleep(3)
+    time.sleep(sleep)
 
   num_steps_to_home=(steps_per_frame)*(sample_count-1)+steps_to_start-100
   print(photo_range)
