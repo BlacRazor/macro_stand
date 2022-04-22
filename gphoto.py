@@ -122,7 +122,7 @@ while finish_work!=True:
 
   size_full_frame=sample_count*frame_size
   ofset=size_full_frame-sample_lenght
-  if ofset<(frame_size/2):
+  if ofset<(frame_size/4):
       sample_count=sample_count+1
   size_full_frame=sample_count*frame_size
   ofset=size_full_frame-sample_lenght
@@ -150,7 +150,7 @@ while finish_work!=True:
         print('Please reboote stand and restart process')
         exit()
       if atempt>5:
-        print('Please reconnect camera and press Enter')
+        print('Please reconnect camera (When you touch shot button on camera on display camera show "Bussy"!) and press Enter')
         input()
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,steps_per_frame)
