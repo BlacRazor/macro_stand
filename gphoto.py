@@ -35,17 +35,17 @@ def go_home(start,steps_to_home):
 #    GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
     
     motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
-                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                     "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps_to_home, # number of steps
-                     .001, # step delay [sec]
+                     .0008, # step delay [sec]
                      False, # True = print verbose output 
-                     .05) # initial delay [sec]
+                     .005) # initial delay [sec]
     small_steps=int(198/4)
     while GPIO.input(start)==True:
         motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
-                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                     "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     small_steps, # number of steps
-                     .001, # step delay [sec]
+                     .0008, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 
@@ -62,24 +62,24 @@ def next_photo(finish,steps):
 #   GPIO.output(EN_pin,GPIO.LOW) # pull enable to low to enable motor
   if GPIO.input(finish)==True:
     motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
-                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                     "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
-                     .001, # step delay [sec]
+                     .0008, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
   else:
     motor.motor_go(True, # True=Clockwise, False=Counter-Clockwise
-                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                     "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     int(steps/2), # number of steps
-                     .001, # step delay [sec]
+                     .0008, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
     #GPIO.cleanup() 
 def go_start_position(steps,direction):
   motor.motor_go(direction, # True=Right->Left, False=Left->Right
-                     "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
+                     "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
-                     .001, # step delay [sec]
+                     .0008, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
 finish_work=False
