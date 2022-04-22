@@ -12,9 +12,9 @@ GPIO.setmode(GPIO.BCM)
 # 34mm minimal frame size
 # 7mm travel per round
 # 19steps on one mm travel
-step_per_mm=19
+step_per_mm=25
 # Half linear beams for compute start position
-half_line=659
+half_line=400
 
 direction_pin= 22 # Direction (DIR) GPIO Pin
 step_pin = 23 # Step GPIO Pin
@@ -112,12 +112,12 @@ while finish_work!=True:
   elif crossing==2:
     frame_size=frame_size-int(frame_size*0.5)
     steps_per_frame=math.ceil(frame_size*step_per_mm)
-    sample_count=math.ceil(sample_lenght/frame_size)+2
+    sample_count=math.ceil(sample_lenght/frame_size)
     sleep=2
   else:
     frame_size=frame_size-int(frame_size*0.75)
     steps_per_frame=math.ceil(frame_size*step_per_mm)
-    sample_count=math.ceil(sample_lenght/frame_size)+6
+    sample_count=math.ceil(sample_lenght/frame_size)
     sleep=3
 
   size_full_frame=sample_count*frame_size
@@ -155,7 +155,7 @@ while finish_work!=True:
         input()
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,steps_per_frame)
-    time.sleep(sleep)
+    #time.sleep(sleep)
 
   num_steps_to_home=(steps_per_frame)*(sample_count-1)+steps_to_start-100
   print(photo_range)
