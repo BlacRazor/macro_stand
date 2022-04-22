@@ -126,7 +126,8 @@ while finish_work!=True:
       sample_count=sample_count+1
   size_full_frame=sample_count*frame_size
   ofset=size_full_frame-sample_lenght
-  steps_to_start=math.ceil((half_line-(sample_lenght+ofset/2))*step_per_mm)
+  
+  steps_to_start=math.ceil((sample_lenght/2+ofset/2)*step_per_mm)
 
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
