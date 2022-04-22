@@ -88,7 +88,7 @@ while finish_work!=True:
   input()
   go_start_position(half_line*step_per_mm,False)
   # Get frame size
-  print("Input frame size in mm (minimal 34mm):")
+  print("Check conection and AF camera! Input frame size in mm (minimal 34mm):")
   frame_size=int(input())
   # Get sample lenght and decide count photo
   print("Input sample lenght(mm) and press Enter:")
@@ -127,15 +127,13 @@ while finish_work!=True:
   size_full_frame=sample_count*frame_size
   ofset=size_full_frame-sample_lenght
   
-  steps_to_start=math.ceil((sample_lenght/2+ofset/2)*step_per_mm)
+  steps_to_start=math.ceil((sample_lenght/2)*step_per_mm)
 
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
   go_start_position(steps_to_start,True)
   # Take Photo from DSLR
-  print("Check AF camera and push Enter")
-  input()
   for i in range(sample_count+2):
     ok=False
     atempt=0
