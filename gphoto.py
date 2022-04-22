@@ -86,7 +86,7 @@ finish_work=False
 while finish_work!=True:
   print('Install sample on holder and press Enter to finish')
   input()
-  go_start_position(half_line*step_per_mm,True)
+  go_start_position(half_line*step_per_mm,False)
   # Get frame size
   print("Input frame size in mm (minimal 34mm):")
   frame_size=int(input())
@@ -131,7 +131,7 @@ while finish_work!=True:
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
-  go_start_position(steps_to_start,False)
+  go_start_position(steps_to_start,True)
   # Take Photo from DSLR
   print("Check AF camera and push Enter")
   input()
