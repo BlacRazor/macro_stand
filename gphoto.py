@@ -75,8 +75,8 @@ def next_photo(finish,steps):
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
     #GPIO.cleanup() 
-def go_start_position(steps):
-  motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
+def go_start_position(steps,direction):
+  motor.motor_go(direction, # True=Right->Left, False=Left->Right
                      "Full" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
                      .001, # step delay [sec]
@@ -84,6 +84,9 @@ def go_start_position(steps):
                      .05) # initial delay [sec]
 finish_work=False
 while finish_work!=True:
+  print('Install sample on holder and press Enter to finish')
+  input()
+  go_start_position(half_line*step_per_mm,True)
   # Get frame size
   print("Input frame size in mm (minimal 34mm):")
   frame_size=int(input())
@@ -128,12 +131,28 @@ while finish_work!=True:
   #sample_count = int(sample_lenght/frame_size)+1
   print("Count photo: "+str(sample_count))
   photo_range=[]
-  go_start_position(steps_to_start)
+  go_start_position(steps_to_start,False)
   # Take Photo from DSLR
   print("Check AF camera and push Enter")
   input()
   for i in range(sample_count+2):
-    result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True)
+    ok=False
+    atempt=0
+    while ok==False:
+      result=subprocess.run(["gphoto2 --capture-image-and-download --filename "+sample_name+"_"+str(i)+".jpg"],shell=True,capture_output=True, text=True)
+      if result.stderr!='':
+        ok=False
+        print('Warning: fail camera: '+result.stderr)
+        atempt=atempt+1
+      else:
+        ok=True
+        atempt=0
+      if atempt>10:
+        print('Please reboote stand and restart process')
+        exit()
+      if atempt>5:
+        print('Please reconnect camera and press Enter')
+        input()
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,steps_per_frame)
     time.sleep(sleep)
