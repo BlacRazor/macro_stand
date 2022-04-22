@@ -134,7 +134,7 @@ while finish_work!=True:
   photo_range=[]
   go_start_position(steps_to_start,True)
   # Take Photo from DSLR
-  for i in range(sample_count+2):
+  for i in range(sample_count):
     ok=False
     atempt=0
     while ok==False:
@@ -156,7 +156,7 @@ while finish_work!=True:
     next_photo(finish_point_pin,steps_per_frame)
     #time.sleep(sleep)
 
-  num_steps_to_home=(steps_per_frame)*(sample_count-1)+steps_to_start-100
+  num_steps_to_home=int((steps_per_frame)*(sample_count-1)+steps_to_start*2-100)
   print(photo_range)
   go_home(start_point_pin,num_steps_to_home)
   images = [Image.open(x) for x in photo_range]
