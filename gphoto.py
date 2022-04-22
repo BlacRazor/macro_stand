@@ -64,7 +64,7 @@ def next_photo(finish,steps):
     motor.motor_go(False, # True=Clockwise, False=Counter-Clockwise
                      "1/8" , # Step type (Full,Half,1/4,1/8,1/16,1/32)
                     steps, # number of steps
-                     .0008, # step delay [sec]
+                     .00095, # step delay [sec]
                      False, # True = print verbose output 
                      .05) # initial delay [sec]
   else:
