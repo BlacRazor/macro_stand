@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/bin/python /home/pi/macro_stand/gphoto.py
+Exec=/bin/python /home/pi/macro_stand/initial.py && /bin/python /home/pi/macro_stand/gphoto.py
 Icon=/home/pi/macro_stand/camera.png
 Terminal=true
 Name=GetPhoto

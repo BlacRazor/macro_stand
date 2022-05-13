@@ -94,7 +94,7 @@ while finish_work!=True:
   print("Input sample lenght(mm) and press Enter:")
   sample_lenght = int(input())
   # Get Sample name and create folder for photo
-  print("Input sample name and press Enter:")
+  print("Input sample name and press Enter (without spaces):")
   sample_name = input()
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
