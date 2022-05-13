@@ -88,7 +88,8 @@ while finish_work!=True:
   input()
   go_start_position(half_line*step_per_mm,False)
   # Get frame size
-  print("Check conection and AF camera! Input frame size in mm (minimal 34mm):")
+  print("Check conection and AF camera! (fix conecction on/off cammera). Off AF on lens!")
+  print("Input frame size in mm (minimal 34mm) :")
   frame_size=int(input())
   # Get sample lenght and decide count photo
   print("Input sample lenght(mm) and press Enter:")
