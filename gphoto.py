@@ -6,6 +6,8 @@ import time
 import os
 #import shutil
 from PIL import Image
+subprocess.run(["/bin/python /home/pi/macro_stand/initial.py"],shell=True)
+
 #Set drive and endpoint settings
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
