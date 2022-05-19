@@ -86,23 +86,23 @@ def go_start_position(steps,direction):
                      .05) # initial delay [sec]
 finish_work=False
 while finish_work!=True:
-  print('Install sample on holder and press Enter to continue')
+  print('1. Install sample on holder and press Enter to continue')
   input()
   go_start_position(half_line*step_per_mm,False)
   # Get frame size
-  print("Check conection and AF camera! (fix connection - on/off camera). Off AF on lens!")
+  print("2. Check conection and AF camera! (fix connection - on/off camera). Off AF on lens!")
   print("Input frame size in mm (minimal 34mm):")
   frame_size=int(input())
   # Get sample lenght and decide count photo
-  print("Input sample length(mm) and press Enter:")
+  print("3. Input sample length(mm) and press Enter:")
   sample_lenght = int(input())
   # Get Sample name and create folder for photo
-  print("Input sample name and press Enter (without spaces):")
+  print("4. Input sample name and press Enter (without spaces):")
   sample_name = input()
   subprocess.run(["mkdir /home/pi/project/RAMdrive/"+sample_name],shell=True)
   os.chdir("/home/pi/project/RAMdrive/"+sample_name)
   crossing=0
-  print("Input number choise frame crossing (only variant 1,2 or 3):")
+  print("5. Input number choise frame crossing (only variant 1,2 or 3):")
   print("1) 1/4")
   print("2) 1/2")
   print("3) 3/4")
