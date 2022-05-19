@@ -86,15 +86,15 @@ def go_start_position(steps,direction):
                      .05) # initial delay [sec]
 finish_work=False
 while finish_work!=True:
-  print('Install sample on holder and press Enter to finish')
+  print('Install sample on holder and press Enter to continue')
   input()
   go_start_position(half_line*step_per_mm,False)
   # Get frame size
-  print("Check conection and AF camera! (fix conecction on/off cammera). Off AF on lens!")
-  print("Input frame size in mm (minimal 34mm) :")
+  print("Check conection and AF camera! (fix connection - on/off camera). Off AF on lens!")
+  print("Input frame size in mm (minimal 34mm):")
   frame_size=int(input())
   # Get sample lenght and decide count photo
-  print("Input sample lenght(mm) and press Enter:")
+  print("Input sample length(mm) and press Enter:")
   sample_lenght = int(input())
   # Get Sample name and create folder for photo
   print("Input sample name and press Enter (without spaces):")
@@ -153,7 +153,7 @@ while finish_work!=True:
         print('Please reboote stand and restart process')
         exit()
       if atempt>5:
-        print('Please reconnect camera (When you touch shot button on camera on display camera show "Bussy"!) and press Enter')
+        print('Please reconnect camera (When you touch shot button on camera on visor show "Bussy" or display show PC icon!) and press Enter')
         input()
     photo_range.append(sample_name+"_"+str(i)+".jpg")
     next_photo(finish_point_pin,steps_per_frame)
