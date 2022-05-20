@@ -150,7 +150,8 @@ while finish_work!=True:
         ok=True
         atempt=0
       if atempt>10:
-        print('Please reboote stand and restart process')
+        print('Please reboote stand and restart process. Press Enter for close window.')
+        input()
         exit()
       if atempt>5:
         print('Please reconnect camera (When you touch shot button on camera on visor show "Bussy" or display show PC icon!) and press Enter')
